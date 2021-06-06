@@ -3,7 +3,7 @@ pipeline {
         label 'cat'
     }
     triggers {
-        cron('H * * * 1-4')
+        cron('H * * * 1-5')
         pollSCM('* * * * *')
     }
     parameters {
