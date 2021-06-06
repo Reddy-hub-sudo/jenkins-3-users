@@ -1,0 +1,34 @@
+pipeline {
+    agent {
+        label 'cat'
+    }
+    triggers {
+        cron('H * * * 1-4')
+        pollSCM('* * * * *')
+    }
+    parameters {
+        string(name: 'MAVENGOAL', defaultValue: 'clean package', description: 'enter the mavengaoal')
+    }
+    options {
+        timeout(time: 5, unit: 'MINUTES')
+    }
+    stages {
+        stage('scm') {
+            steps{
+                git branch: 'developer', url: 'https://github.com/Reddy-hub-sudo/dummy-gol.git'
+            }
+        }
+        stage('build') {
+            steps{
+                sh script: "mvn ${params.MAVENGOAL}"
+            }
+        }
+        stage('post build') {
+            steps{
+                junit 'gameoflife-web/target/surefire-reports/*.xml'
+                archiveArtifacts 'gameoflife-web/target/*.war'
+            }
+        }
+    }     
+}
+gjsahlkjaslxja
